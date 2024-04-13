@@ -51,7 +51,7 @@ public class GestionnaireCompte {
 
     public List<CompteBancaire> getAllComptes() {
         //Query query = em.createNamedQuery("Comptebancaire.findAll");
-        String s = "select e from Compte as e";
+        String s = "select e from CompteBancaire e";
         TypedQuery<CompteBancaire> query
                 = em.createQuery(s, CompteBancaire.class);
         return query.getResultList();
