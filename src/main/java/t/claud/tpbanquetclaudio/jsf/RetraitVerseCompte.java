@@ -94,7 +94,10 @@ public class RetraitVerseCompte implements Serializable{
 
     public boolean checkTransaction() {
         boolean error = false;
-        if (montant <= 0) {
+        if(typeMouv==null){
+            Util.messageErreur("Type mouvement non definit !", "Type mouvement non definit !", "form:mouv");
+            error = true;
+        }else if (montant <= 0) {
             Util.messageErreur("Montant de la transaction doit être superieur à 0 !", "Montant incorect !", "form:montant");
             error = true;
         } else if (this.compte.getSolde() < montant) {

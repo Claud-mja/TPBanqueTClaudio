@@ -6,7 +6,9 @@ package t.claud.tpbanquetclaudio.jsf;
 
 import jakarta.inject.Named;
 import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
+import java.io.Serializable;
 import t.claud.tpbanquetclaudio.entity.CompteBancaire;
 import t.claud.tpbanquetclaudio.jsf.util.Util;
 import t.claud.tpbanquetclaudio.service.GestionnaireCompte;
@@ -16,11 +18,14 @@ import t.claud.tpbanquetclaudio.service.GestionnaireCompte;
  * @author PC
  */
 @Named(value = "compte")
-@RequestScoped
-public class Compte {
+@ViewScoped
+public class Compte implements Serializable{
     
     @Inject
     GestionnaireCompte gc;
+    
+    private CompteBancaire compteBancaire;
+    private int idCompte;
     
     private String nomTitulaire;
     private int solde;
@@ -46,6 +51,27 @@ public class Compte {
     public void setSolde(int solde) {
         this.solde = solde;
     }
+
+    public CompteBancaire getCompteBancaire() {
+        return compteBancaire;
+    }
+
+    public void setCompteBancaire(CompteBancaire compteBancaire) {
+        this.compteBancaire = compteBancaire;
+    }
+
+
+    public int getIdCompte() {
+        return idCompte;
+    }
+
+    public void setIdCompte(int idCompte) {
+        this.idCompte = idCompte;
+    }
+    
+    public void loadCompte(){
+        this.compteBancaire = gc.getCompte(idCompte);
+    }
     
     public String inserer(){
         CompteBancaire c = gc.getCompteByName(nomTitulaire);
@@ -63,6 +89,18 @@ public class Compte {
         gc.creerCompte(c);
         
         Util.addFlashInfoMessage("La création du compte de "+c.getNom()+" effectué avec une Solde de "+c.getSolde());
+        return "listeComptes?faces-redirect=true";
+    }
+    
+    public String modifier(){
+        
+        if(compteBancaire.getSolde()<=0){
+            Util.messageErreur("Le solde doit imperativement être superieur à 1 !", "Solde bancaire incorect ! ", "form:solde");
+            return null;
+        }
+        
+        gc.updateCompte(compteBancaire);
+        Util.addFlashInfoMessage("Modification de nom compte en "+compteBancaire.getNom()+" effectué");
         return "listeComptes?faces-redirect=true";
     }
     

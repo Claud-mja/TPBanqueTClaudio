@@ -27,3 +27,7 @@ a:link:hover, a:visited:hover  {
   font-weight : bold;
   text-decoration : underline;
 }
+
+.edit-btn{
+    margin-left: 6px
+}

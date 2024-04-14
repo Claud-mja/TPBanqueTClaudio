@@ -30,7 +30,7 @@
                                 <h:outputText value="Id Compte"/>
                             </f:facet>
                             <h:link outcome="retraitVersementCompte?idCompte=#{item.id}" 
-                            value="#{item.id}"/>
+                                    value="#{item.id}"/>
                         </p:column>
 
                         <p:column filterBy="#{item.nom}" 
@@ -52,6 +52,11 @@
                             <h:commandLink action="#{listeComptes.supprimer(item)}" title="Supprimer le compte de #{item.nom}">
                                 <h:graphicImage height="25" width="25" name="images/trash-bin.png"  />
                             </h:commandLink>
+                            <h:outputLink class="edit-btn" value="modifierCompte.xhtml">
+                                <f:param name="idCompte" value="#{item.id}" />
+                                <f:param name="nom" value="#{item.nom}" />
+                                <h:graphicImage height="25" width="25" name="images/pen.png"  />
+                            </h:outputLink>
                         </p:column>
                     </p:dataTable>
                 </h:form>
