@@ -101,5 +101,21 @@ public class CompteBancaire implements Serializable {
     public String toString() {
         return "t.claud.tpbanquetclaudio.entity.CompteBancaire[ id=" + id + " ]";
     }
+    
+    public void retrait(int montant){
+        setSolde(solde-montant);
+    }
+    
+    public void versement(int montant){
+        setSolde(solde+montant);
+    }
+    
+    public static void transferer(CompteBancaire source , CompteBancaire dest , int montant){
+        int newSourceSolde = source.getSolde() - montant;
+        int newDestSolde = dest.getSolde() + montant;
+
+        source.setSolde(newSourceSolde);
+        dest.setSolde(newDestSolde);
+    }
 
 }

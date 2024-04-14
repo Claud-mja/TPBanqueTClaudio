@@ -18,10 +18,10 @@ import t.claud.tpbanquetclaudio.service.GestionnaireCompte;
 @Named(value = "transfert")
 @RequestScoped
 public class TransfertAgrent {
-
+    
     @Inject
     GestionnaireCompte gc;
-
+    
     private int idSource;
     private int idDest;
     private int montant;
@@ -31,31 +31,31 @@ public class TransfertAgrent {
      */
     public TransfertAgrent() {
     }
-
+    
     public int getIdSource() {
         return idSource;
     }
-
+    
     public void setIdSource(int idSource) {
         this.idSource = idSource;
     }
-
+    
     public int getIdDest() {
         return idDest;
     }
-
+    
     public void setIdDest(int idDest) {
         this.idDest = idDest;
     }
-
+    
     public int getMontant() {
         return montant;
     }
-
+    
     public void setMontant(int montant) {
         this.montant = montant;
     }
-
+    
     public String transferer() {
         CompteBancaire sourceCompte = gc.getCompte(idSource);
         CompteBancaire destCompte = gc.getCompte(idDest);
@@ -64,21 +64,14 @@ public class TransfertAgrent {
             return null;
         }
         
-        int newSourceSolde = sourceCompte.getSolde() - montant;
-        int newDestSolde = destCompte.getSolde() + montant;
-
-        sourceCompte.setSolde(newSourceSolde);
-        destCompte.setSolde(newDestSolde);
+        CompteBancaire.transferer(sourceCompte, destCompte, montant);
         
         gc.transfert(sourceCompte, destCompte, montant);
-
-        String nomProprioSource = sourceCompte.getNom();
-        String nomProprioDest = destCompte.getNom();
         
-        Util.addFlashInfoMessage("Transfert de " + montant + " effectué de " + nomProprioSource + " vers " + nomProprioDest);
+        Util.addFlashInfoMessage("Transfert de " + montant + " effectué de " + sourceCompte.getNom() + " vers " + destCompte.getNom());
         return "listeComptes?faces-redirect=true";
     }
-
+    
     private boolean checkTransfert(CompteBancaire source, CompteBancaire dest) {
         boolean erreur = false;
         if (source == null || dest == null) {
@@ -88,7 +81,7 @@ public class TransfertAgrent {
             if (source == null) {
                 Util.messageErreur("Aucun compte avec cet id !", "Aucun compte avec cet id !", "form:source");
             }
-
+            
             if (dest == null) {
                 Util.messageErreur("Aucun compte avec cet id !", "Aucun compte avec cet id !", "form:dest");
             }
@@ -101,5 +94,5 @@ public class TransfertAgrent {
         }
         return erreur;
     }
-
+    
 }
