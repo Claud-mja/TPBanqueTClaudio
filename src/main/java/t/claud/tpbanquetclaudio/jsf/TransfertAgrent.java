@@ -9,6 +9,7 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import t.claud.tpbanquetclaudio.entity.CompteBancaire;
+import t.claud.tpbanquetclaudio.jsf.util.Util;
 import t.claud.tpbanquetclaudio.service.GestionnaireCompte;
 
 /**
@@ -18,13 +19,14 @@ import t.claud.tpbanquetclaudio.service.GestionnaireCompte;
 @Named(value = "transfert")
 @RequestScoped
 public class TransfertAgrent {
-    
+
     @Inject
     GestionnaireCompte gc;
-    
+
     private int idSource;
     private int idDest;
     private int montant;
+
     /**
      * Creates a new instance of TransfertAgrent
      */
@@ -54,26 +56,51 @@ public class TransfertAgrent {
     public void setMontant(int montant) {
         this.montant = montant;
     }
-    
-    @Transactional
-    public String transferer() throws Exception{
+
+    public String transferer() {
         CompteBancaire sourceCompte = gc.getCompte(idSource);
-        CompteBancaire destCompte =  gc.getCompte(idDest);
-        
-        int newSourceSolde = sourceCompte.getSolde()-montant;
-        int newDestSolde = destCompte.getSolde()+montant;
-        if(newSourceSolde<0){
-            throw new Exception("Solde source insufisant !");
+        CompteBancaire destCompte = gc.getCompte(idDest);
+        boolean error = this.checkTransfert(sourceCompte, destCompte);
+        if (error) {
+            return null;
         }
         
+        int newSourceSolde = sourceCompte.getSolde() - montant;
+        int newDestSolde = destCompte.getSolde() + montant;
+
         sourceCompte.setSolde(newSourceSolde);
         destCompte.setSolde(newDestSolde);
         
-        gc.updateCompte(sourceCompte);
-        gc.updateCompte(destCompte);
+        gc.transfert(sourceCompte, destCompte, montant);
+
+        String nomProprioSource = sourceCompte.getNom();
+        String nomProprioDest = destCompte.getNom();
         
-        System.out.println("La transfert entre le client "+idSource+" et le client "+idDest+" avec une somme de "+montant+" effectuer ");
-        return "listeComptes";
+        Util.addFlashInfoMessage("Transfert de " + montant + " effectué de " + nomProprioSource + " vers " + nomProprioDest);
+        return "listeComptes?amp;faces-redirect=true";
     }
-    
+
+    private boolean checkTransfert(CompteBancaire source, CompteBancaire dest) {
+        boolean erreur = false;
+        if (source == null || dest == null) {
+            // Message d'erreur associé au composant source ; form:source est l'id client
+            // si l'id du formulaire est "form" et l'id du champ de saisie de l'id de la source est "source"
+            // dans la page JSF qui lance le transfert.
+            if (source == null) {
+                Util.messageErreur("Aucun compte avec cet id !", "Aucun compte avec cet id !", "form:source");
+            }
+
+            if (dest == null) {
+                Util.messageErreur("Aucun compte avec cet id !", "Aucun compte avec cet id !", "form:dest");
+            }
+            erreur = true;
+        } else {
+            if (source.getSolde() < montant) {
+                Util.messageErreur("Solde insufisant pour le transfert !", "Solde source insuficant !", "form:source");
+                erreur = true;
+            }
+        }
+        return erreur;
+    }
+
 }
