@@ -35,7 +35,6 @@ import t.claud.tpbanquetclaudio.entity.CompteBancaire;
  */
 @ApplicationScoped
 public class GestionnaireCompte {
-
     @PersistenceContext(unitName = "banquePU")
     private EntityManager em;
 
@@ -57,11 +56,20 @@ public class GestionnaireCompte {
         return query.getResultList();
     }
     
-    
     public long nbComptes(){
         String req = "SELECT count(c) FROM CompteBancaire AS c";
         TypedQuery<Long> query = em.createQuery(req , Long.class);
         return query.getSingleResult();
     }
-
+    
+    public CompteBancaire getCompte(int idCompte){
+        String req = "SELECT c FROM CompteBancaire c WHERE c.id = "+idCompte;
+        TypedQuery<CompteBancaire> query = em.createQuery(req , CompteBancaire.class);
+        return query.getSingleResult();
+    }
+    
+    @Transactional
+    public CompteBancaire updateCompte(CompteBancaire compteBancaire){
+        return em.merge(compteBancaire);
+    }
 }

@@ -19,7 +19,9 @@ import t.claud.tpbanquetclaudio.service.GestionnaireCompte;
 @Named(value = "listeComptes")
 @ViewScoped
 public class ListeComptes implements Serializable {
-    
+
+    private List<CompteBancaire> bancaires;
+
     @Inject
     GestionnaireCompte gc;
 
@@ -28,9 +30,12 @@ public class ListeComptes implements Serializable {
      */
     public ListeComptes() {
     }
-    
-    public List<CompteBancaire> getAllComptes(){
-        return this.gc.getAllComptes();
+
+    public List<CompteBancaire> getAllComptes() {
+        if (bancaires == null) {
+            return this.gc.getAllComptes();
+        }
+        return bancaires;
     }
-    
+
 }
