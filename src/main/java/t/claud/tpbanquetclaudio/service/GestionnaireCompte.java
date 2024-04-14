@@ -85,4 +85,15 @@ public class GestionnaireCompte {
         this.updateCompte(source);
         this.updateCompte(destination);
     }
+
+    public CompteBancaire getCompteByName(String nom) {
+        String req = "SELECT c FROM CompteBancaire c WHERE c.nom = :nom";
+        TypedQuery<CompteBancaire> query = em.createQuery(req, CompteBancaire.class);
+        query.setParameter("nom", nom);
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException ex) {
+            return null; // Gérer le cas où aucun compte n'est trouvé avec cet identifiant
+        }
+    }
 }

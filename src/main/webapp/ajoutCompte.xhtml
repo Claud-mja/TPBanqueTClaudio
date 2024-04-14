@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="jakarta.faces.html">
+
+    <body>
+
+        <ui:composition template="./WEB-INF/templates/template_defaut.xhtml">
+
+            <ui:define name="top">
+                Ajout d'un nouveau compte bancaire
+            </ui:define>
+
+            <ui:define name="content">
+                <h:form id="form">
+                    <h:panelGrid columns="3">
+                        Nom tutulaire : 
+                        <h:inputText id="nom" size="10" value="#{compte.nomTitulaire}"
+                                     required="true"
+                                     converterMessage="Le nom est une chaine de caractère"/>
+                        <h:message for="nom"/>
+                        Solde : 
+                        <h:inputText id="solde" size="8" value="#{compte.solde}"
+                                     required="true"
+                                     converterMessage="Le solde est un entier"/>
+                        <h:message for="solde"/>
+                    </h:panelGrid>
+                    <h:commandButton value="Valider" action="#{compte.inserer()}" />
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
