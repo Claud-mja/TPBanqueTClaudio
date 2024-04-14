@@ -10,6 +10,7 @@ import jakarta.inject.Inject;
 import java.io.Serializable;
 import java.util.List;
 import t.claud.tpbanquetclaudio.entity.CompteBancaire;
+import t.claud.tpbanquetclaudio.jsf.util.Util;
 import t.claud.tpbanquetclaudio.service.GestionnaireCompte;
 
 /**
@@ -36,6 +37,12 @@ public class ListeComptes implements Serializable {
             return this.gc.getAllComptes();
         }
         return bancaires;
+    }
+    
+    public String supprimer(CompteBancaire cb){
+        gc.deleteCompte(cb);
+        Util.addFlashInfoMessage("Compte de " + cb.getNom() + " supprimé");
+        return "listeComptes?faces-redirect=true";
     }
 
 }

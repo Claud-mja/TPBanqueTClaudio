@@ -46,6 +46,12 @@
                             </f:facet>
                             <h:outputText value="#{item.solde}"/>
                         </p:column>
+
+                        <p:column>
+                            <h:commandLink action="#{listeComptes.supprimer(item)}" title="Supprimer le compte de #{item.nom}">
+                                <h:graphicImage height="25" width="25" name="images/trash-bin.png"  />
+                            </h:commandLink>
+                        </p:column>
                     </p:dataTable>
                 </h:form>
 

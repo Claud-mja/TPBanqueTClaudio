@@ -7,7 +7,6 @@ package t.claud.tpbanquetclaudio.jsf;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import t.claud.tpbanquetclaudio.entity.CompteBancaire;
 import t.claud.tpbanquetclaudio.jsf.util.Util;
 import t.claud.tpbanquetclaudio.service.GestionnaireCompte;
@@ -77,7 +76,7 @@ public class TransfertAgrent {
         String nomProprioDest = destCompte.getNom();
         
         Util.addFlashInfoMessage("Transfert de " + montant + " effectué de " + nomProprioSource + " vers " + nomProprioDest);
-        return "listeComptes?amp;faces-redirect=true";
+        return "listeComptes?faces-redirect=true";
     }
 
     private boolean checkTransfert(CompteBancaire source, CompteBancaire dest) {

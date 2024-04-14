@@ -63,7 +63,7 @@ public class Compte {
         gc.creerCompte(c);
         
         Util.addFlashInfoMessage("La création du compte de "+c.getNom()+" effectué avec une Solde de "+c.getSolde());
-        return "listeComptes?amp;faces-redirect=true";
+        return "listeComptes?faces-redirect=true";
     }
     
 }

@@ -96,4 +96,9 @@ public class GestionnaireCompte {
             return null; // Gérer le cas où aucun compte n'est trouvé avec cet identifiant
         }
     }
+    
+    @Transactional
+    public void deleteCompte(CompteBancaire compte){
+        em.remove(em.merge(compte));
+    }
 }
