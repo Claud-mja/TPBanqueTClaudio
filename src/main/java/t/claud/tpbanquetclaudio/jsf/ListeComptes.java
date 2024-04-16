@@ -34,7 +34,7 @@ public class ListeComptes implements Serializable {
 
     public List<CompteBancaire> getAllComptes() {
         if (bancaires == null) {
-            return this.gc.getAllComptes();
+            bancaires = gc.getAllComptes();
         }
         return bancaires;
     }
