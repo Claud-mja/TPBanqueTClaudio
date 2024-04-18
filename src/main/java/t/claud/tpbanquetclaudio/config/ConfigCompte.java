@@ -18,6 +18,7 @@ import t.claud.tpbanquetclaudio.service.GestionnaireCompte;
  *
  * @author PC
  */
+@ApplicationScoped
 public class ConfigCompte {
 
     @Inject
@@ -26,7 +27,7 @@ public class ConfigCompte {
     @Transactional
     public void init(
             @Observes
-            @Initialized(ApplicationScoped.class) ServletContext context) {
+            @Initialized(ApplicationScoped.class) ServletContext context) { 
         long nbCompteDB = gc.nbComptes();   
         if (nbCompteDB <= 0) {
             gc.creerCompte(new CompteBancaire("John Lennon", 150000));

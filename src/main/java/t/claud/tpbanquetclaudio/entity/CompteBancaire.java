@@ -4,15 +4,20 @@
  */
 package t.claud.tpbanquetclaudio.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -36,6 +41,9 @@ public class CompteBancaire implements Serializable {
     private String nom;
 
     private int solde;
+    
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)  
+    private List<OperationBancaire> operations = new ArrayList<>(); 
 
     public String getNom() {
         return nom;
@@ -59,6 +67,7 @@ public class CompteBancaire implements Serializable {
     public CompteBancaire(String nom, int solde) {
         this.nom = nom;
         this.solde = solde;
+        operations.add(new OperationBancaire("Création du compte", solde));
     }
 
     public void deposer(int montant) {
@@ -75,6 +84,10 @@ public class CompteBancaire implements Serializable {
 
     public Long getId() {
         return id;
+    }
+    
+    public List<OperationBancaire> getOperations() {  
+      return operations;  
     }
 
     @Override
@@ -103,11 +116,15 @@ public class CompteBancaire implements Serializable {
     }
     
     public void retrait(int montant){
-        setSolde(solde-montant);
+        int newSolde =  solde-montant;
+        setSolde(newSolde);
+        operations.add(new OperationBancaire("Débit", -montant));
     }
     
     public void versement(int montant){
-        setSolde(solde+montant);
+        int newSolde =  solde+montant;
+        setSolde(newSolde);
+        operations.add(new OperationBancaire("Crédit", montant));
     }
     
     public static void transferer(CompteBancaire source , CompteBancaire dest , int montant){

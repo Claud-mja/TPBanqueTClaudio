@@ -5,7 +5,6 @@
 package t.claud.tpbanquetclaudio.jsf;
 
 import jakarta.inject.Named;
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import java.io.Serializable;
@@ -77,18 +76,15 @@ public class RetraitVerseCompte implements Serializable{
             return null;
         }
         switch (typeMouv) {
-            case "Retrait":
-                compte.retrait(montant);
-                break;
-            case "Versement":
-                compte.versement(montant);
-                break;
-            default:
+            case "Retrait" -> compte.retrait(montant);
+            case "Versement" -> compte.versement(montant);
+            default -> {
                 Util.messageErreur("Type mouvement non definit !", "Type mouvement non definit !", "form:mouv");
                 return null;
+            }
         }
         gc.updateCompte(compte);
-        Util.addFlashInfoMessage(typeMouv + " de " + montant + " effectué du compte de " + this.compte.getNom());
+        Util.addFlashInfoMessage(typeMouv + " de " + montant + " effectué du compte de " + this.compte.getNom()); 
         return "listeComptes?faces-redirect=true";
     }
 
