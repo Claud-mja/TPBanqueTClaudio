@@ -61,6 +61,17 @@
                                 <h:graphicImage height="25" width="25" name="images/pen.png"  />
                             </h:outputLink>
                         </p:column>
+
+                        <p:column width="100px">
+                            <f:facet name="header">
+                                <h:outputText value="Historique"/>
+                                <br/>
+                                <h:outputText value="operations" />
+                            </f:facet>
+                            <h:link outcome="operations" value="Détails" >
+                                <f:param name="idCompte" value="#{item.id}" />
+                            </h:link>
+                        </p:column>
                     </p:dataTable>
                 </h:form>
 

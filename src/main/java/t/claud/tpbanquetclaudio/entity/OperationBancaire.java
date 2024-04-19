@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -92,6 +93,12 @@ public class OperationBancaire implements Serializable {
     @Override
     public String toString() {
         return "t.claud.tpbanquetclaudio.entity.OperationBancaire[ id=" + id + " ]";
+    }
+    
+    public String showDateInFormat(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        String formattedDate = dateOperation.format(formatter);
+        return formattedDate;
     }
     
 }

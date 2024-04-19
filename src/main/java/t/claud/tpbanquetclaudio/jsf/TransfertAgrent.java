@@ -63,9 +63,6 @@ public class TransfertAgrent {
         if (error) {
             return null;
         }
-        
-        CompteBancaire.transferer(sourceCompte, destCompte, montant);
-        
         gc.transfert(sourceCompte, destCompte, montant);
         
         Util.addFlashInfoMessage("Transfert de " + montant + " effectué de " + sourceCompte.getNom() + " vers " + destCompte.getNom());

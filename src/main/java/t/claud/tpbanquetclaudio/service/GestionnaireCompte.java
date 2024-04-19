@@ -13,6 +13,7 @@ import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import t.claud.tpbanquetclaudio.entity.CompteBancaire;
+import t.claud.tpbanquetclaudio.jsf.util.Util;
 
 @DataSourceDefinition(
         className = "com.mysql.cj.jdbc.MysqlDataSource",
@@ -82,8 +83,22 @@ public class GestionnaireCompte {
 
     @Transactional
     public void transfert(CompteBancaire source, CompteBancaire destination, int montant) {
+        source.retrait(montant);
+        destination.versement(montant);
         this.updateCompte(source);
         this.updateCompte(destination);
+    }
+    
+    @Transactional
+    public CompteBancaire mouvementer(String typeMouv , CompteBancaire cb , int montant){
+        switch (typeMouv) {
+            case "Retrait" -> cb.retrait(montant);
+            case "Versement" -> cb.versement(montant);
+            default -> {
+                return null;
+            }
+        }
+        return this.updateCompte(cb);
     }
 
     public CompteBancaire getCompteByName(String nom) {

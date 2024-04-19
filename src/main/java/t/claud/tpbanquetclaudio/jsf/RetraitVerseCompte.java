@@ -75,15 +75,11 @@ public class RetraitVerseCompte implements Serializable{
         if (isError) {
             return null;
         }
-        switch (typeMouv) {
-            case "Retrait" -> compte.retrait(montant);
-            case "Versement" -> compte.versement(montant);
-            default -> {
-                Util.messageErreur("Type mouvement non definit !", "Type mouvement non definit !", "form:mouv");
-                return null;
-            }
+        CompteBancaire cb = gc.mouvementer(typeMouv,compte , montant);
+        if (cb==null) {
+            Util.messageErreur("Type mouvement non definit !", "Type mouvement non definit !", "form:mouv");
+            return null;
         }
-        gc.updateCompte(compte);
         Util.addFlashInfoMessage(typeMouv + " de " + montant + " effectué du compte de " + this.compte.getNom()); 
         return "listeComptes?faces-redirect=true";
     }

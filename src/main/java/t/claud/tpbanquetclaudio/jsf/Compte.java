@@ -5,7 +5,6 @@
 package t.claud.tpbanquetclaudio.jsf;
 
 import jakarta.inject.Named;
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import java.io.Serializable;

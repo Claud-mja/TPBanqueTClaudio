@@ -41,9 +41,9 @@ public class CompteBancaire implements Serializable {
     private String nom;
 
     private int solde;
-    
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)  
-    private List<OperationBancaire> operations = new ArrayList<>(); 
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<OperationBancaire> operations = new ArrayList<>();
 
     public String getNom() {
         return nom;
@@ -63,7 +63,7 @@ public class CompteBancaire implements Serializable {
 
     public CompteBancaire() {
     }
-    
+
     public CompteBancaire(String nom, int solde) {
         this.nom = nom;
         this.solde = solde;
@@ -85,9 +85,9 @@ public class CompteBancaire implements Serializable {
     public Long getId() {
         return id;
     }
-    
-    public List<OperationBancaire> getOperations() {  
-      return operations;  
+
+    public List<OperationBancaire> getOperations() {
+        return operations;
     }
 
     @Override
@@ -114,25 +114,16 @@ public class CompteBancaire implements Serializable {
     public String toString() {
         return "t.claud.tpbanquetclaudio.entity.CompteBancaire[ id=" + id + " ]";
     }
-    
-    public void retrait(int montant){
-        int newSolde =  solde-montant;
+
+    public void retrait(int montant) {
+        int newSolde = solde - montant;
         setSolde(newSolde);
         operations.add(new OperationBancaire("Débit", -montant));
     }
-    
-    public void versement(int montant){
-        int newSolde =  solde+montant;
+
+    public void versement(int montant) {
+        int newSolde = solde + montant;
         setSolde(newSolde);
         operations.add(new OperationBancaire("Crédit", montant));
     }
-    
-    public static void transferer(CompteBancaire source , CompteBancaire dest , int montant){
-        int newSourceSolde = source.getSolde() - montant;
-        int newDestSolde = dest.getSolde() + montant;
-
-        source.setSolde(newSourceSolde);
-        dest.setSolde(newDestSolde);
-    }
-
 }
