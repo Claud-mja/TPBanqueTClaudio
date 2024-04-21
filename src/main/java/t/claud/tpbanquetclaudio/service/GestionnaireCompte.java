@@ -53,7 +53,7 @@ public class GestionnaireCompte {
 
     public List<CompteBancaire> getAllComptes() {
         //Query query = em.createNamedQuery("Comptebancaire.findAll");
-        String s = "select e from CompteBancaire e join fetch e.operations";
+        String s = "select DISTINCT  e from CompteBancaire e join fetch e.operations";
         TypedQuery<CompteBancaire> query
                 = em.createQuery(s, CompteBancaire.class);
         return query.getResultList();
@@ -87,6 +87,18 @@ public class GestionnaireCompte {
         destination.versement(montant);
         this.updateCompte(source);
         this.updateCompte(destination);
+    }
+    
+    @Transactional
+    public CompteBancaire retrait(CompteBancaire cb , int montant){
+        cb.retrait(montant);
+        return this.updateCompte(cb);
+    }
+    
+    @Transactional
+     public CompteBancaire versement(CompteBancaire cb , int montant){
+        cb.versement(montant);
+        return this.updateCompte(cb);
     }
     
     @Transactional
